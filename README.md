@@ -6,7 +6,7 @@ This is not a barcode scanner, in order to use this package you should previousl
 
 ## Features:
 
-The package can parse barcode containing the following data:
+The package can parse barcodes containing the following data:
 
 - URLs
 - Wifi credentials
@@ -18,7 +18,9 @@ The package can parse barcode containing the following data:
 - Products (ISBN, EAN, UPC...)
 - Plain text
 
-The following types can be parsed and you will know its type but the parsing of their values is not currently supported:
+## Pending work:
+
+The following types can be parsed and you will know their type but the parsing of their values is not currently supported:
 
 - Contact information (VCard)
 - Calendar event (VEvent)
@@ -85,3 +87,8 @@ switch (barcode.valueType) {
 }
 ```
 
+## State of the package
+
+This package is in an early stage, though it's currently used in production.
+
+If you want to contribute, pull requests are welcome.
