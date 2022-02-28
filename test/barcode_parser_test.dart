@@ -98,6 +98,8 @@ END:VEVENT
         'https://wa.me/124681112/?text=message%20to%20be%20delivered';
     const _whatsappApi = 'https://api.whatsapp.com/send?phone=124681112';
 
+    const _twitter = 'https://twitter.com/username';
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -406,6 +408,18 @@ END:VEVENT
 
           expect(wp.phoneNumber, '124681112');
           expect(wp.message, null);
+        });
+      });
+
+      group('given barcode is a Twitter username link', () {
+        test('test twitter', () {
+          final barcode = parser.parse(_twitter);
+          assert(barcode is BarcodeTwitter);
+          expect(barcode.rawValue, _twitter);
+
+          final twitter = barcode as BarcodeTwitter;
+
+          expect(twitter.username, 'username');
         });
       });
     });

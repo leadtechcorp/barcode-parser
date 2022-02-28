@@ -31,6 +31,8 @@ class BarcodeParser {
         return _parseSms(rawValue);
       case BarcodeValueType.whatsapp:
         return _parseWhatsapp(rawValue);
+      case BarcodeValueType.twitter:
+        return _parseTwitter(rawValue);
       default:
         return _parseText(rawValue);
     }
@@ -39,7 +41,9 @@ class BarcodeParser {
   // *************************** PRIVATE METHODS *************************** //
 
   BarcodeValueType _identifyType(String rawValue) {
-    if (rawValue.startsWith('https://wa.me/') ||
+    if (rawValue.startsWith('https://twitter.com/')) {
+      return BarcodeValueType.twitter;
+    } else if (rawValue.startsWith('https://wa.me/') ||
         rawValue.startsWith('https://api.whatsapp.com/')) {
       return BarcodeValueType.whatsapp;
     } else if (isURL(rawValue)) {
@@ -271,5 +275,12 @@ class BarcodeParser {
       phoneNumber: phone,
       message: unencodedMessage,
     );
+  }
+
+  BarcodeTwitter _parseTwitter(String rawValue) {
+    final startIndex = rawValue.indexOf('twitter.com/') + 12;
+    final username = rawValue.substring(startIndex, rawValue.length);
+
+    return BarcodeTwitter(rawValue: rawValue, username: username);
   }
 }
