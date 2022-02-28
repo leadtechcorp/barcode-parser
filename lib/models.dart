@@ -12,7 +12,12 @@ enum BarcodeValueType {
   wifi,
   location,
   calendarEvent,
-  driverLicense
+  driverLicense,
+  whatsapp,
+  twitter,
+  instagram,
+  linkedin,
+  facebook,
 }
 
 abstract class Barcode {
@@ -31,16 +36,16 @@ class BarcodeCalendarEvent extends Barcode {
   final String? status;
   final String? summary;
 
-  BarcodeCalendarEvent(
-      {required String rawValue,
-        this.end,
-        this.start,
-        this.description,
-        this.location,
-        this.organizer,
-        this.status,
-        this.summary})
-      : super(valueType: BarcodeValueType.calendarEvent, rawValue: rawValue);
+  BarcodeCalendarEvent({
+    required String rawValue,
+    this.end,
+    this.start,
+    this.description,
+    this.location,
+    this.organizer,
+    this.status,
+    this.summary,
+  }) : super(valueType: BarcodeValueType.calendarEvent, rawValue: rawValue);
 }
 
 class BarcodeLocation extends Barcode {
@@ -73,23 +78,23 @@ class BarcodeDriverLicense extends Barcode {
   final String? middleName;
   final String? licenseNumber;
 
-  BarcodeDriverLicense(
-      {required String rawValue,
-        this.addressCity,
-        this.addressState,
-        this.addressStreet,
-        this.addressZip,
-        this.birthDate,
-        this.documentType,
-        this.expiryDate,
-        this.firstName,
-        this.gender,
-        this.issueDate,
-        this.issuingCountry,
-        this.lastName,
-        this.middleName,
-        this.licenseNumber})
-      : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
+  BarcodeDriverLicense({
+    required String rawValue,
+    this.addressCity,
+    this.addressState,
+    this.addressStreet,
+    this.addressZip,
+    this.birthDate,
+    this.documentType,
+    this.expiryDate,
+    this.firstName,
+    this.gender,
+    this.issueDate,
+    this.issuingCountry,
+    this.lastName,
+    this.middleName,
+    this.licenseNumber,
+  }) : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
 }
 
 class BarcodeEmail extends Barcode {
@@ -138,9 +143,12 @@ class BarcodeWifi extends Barcode {
   final String? password;
   final WifiEncryptionType? encryptionType;
 
-  BarcodeWifi(
-      {required String rawValue, this.ssid, this.password, this.encryptionType})
-      : super(valueType: BarcodeValueType.wifi, rawValue: rawValue);
+  BarcodeWifi({
+    required String rawValue,
+    this.ssid,
+    this.password,
+    this.encryptionType,
+  }) : super(valueType: BarcodeValueType.wifi, rawValue: rawValue);
 }
 
 class BarcodeProduct extends Barcode {
@@ -153,4 +161,43 @@ class BarcodeProduct extends Barcode {
 class BarcodeText extends Barcode {
   BarcodeText({required String rawValue})
       : super(valueType: BarcodeValueType.text, rawValue: rawValue);
+}
+
+class BarcodeWhatsapp extends Barcode {
+  final String phoneNumber;
+  final String? message;
+
+  BarcodeWhatsapp({
+    required String rawValue,
+    required this.phoneNumber,
+    this.message,
+  }) : super(valueType: BarcodeValueType.whatsapp, rawValue: rawValue);
+}
+
+class BarcodeTwitter extends Barcode {
+  final String username;
+
+  BarcodeTwitter({required String rawValue, required this.username})
+      : super(valueType: BarcodeValueType.twitter, rawValue: rawValue);
+}
+
+class BarcodeInstagram extends Barcode {
+  final String username;
+
+  BarcodeInstagram({required String rawValue, required this.username})
+      : super(valueType: BarcodeValueType.instagram, rawValue: rawValue);
+}
+
+class BarcodeLinkedin extends Barcode {
+  final String username;
+
+  BarcodeLinkedin({required String rawValue, required this.username})
+      : super(valueType: BarcodeValueType.linkedin, rawValue: rawValue);
+}
+
+class BarcodeFacebook extends Barcode {
+  final String username;
+
+  BarcodeFacebook({required String rawValue, required this.username})
+      : super(valueType: BarcodeValueType.facebook, rawValue: rawValue);
 }
