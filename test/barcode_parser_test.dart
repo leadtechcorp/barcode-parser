@@ -102,6 +102,8 @@ END:VEVENT
 
     const _instagram = 'https://instagram.com/username';
 
+    const _linkedin = 'https://www.linkedin.com/in/username';
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -434,6 +436,18 @@ END:VEVENT
           final instagram = barcode as BarcodeInstagram;
 
           expect(instagram.username, 'username');
+        });
+      });
+
+      group('given barcode is a Linkedin username link', () {
+        test('test linkedin', () {
+          final barcode = parser.parse(_linkedin);
+          assert(barcode is BarcodeLinkedin);
+          expect(barcode.rawValue, _linkedin);
+
+          final linkeding = barcode as BarcodeLinkedin;
+
+          expect(linkeding.username, 'username');
         });
       });
     });

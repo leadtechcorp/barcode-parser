@@ -35,6 +35,8 @@ class BarcodeParser {
         return _parseTwitter(rawValue);
       case BarcodeValueType.instagram:
         return _parseInstagram(rawValue);
+      case BarcodeValueType.linkedin:
+        return _parseLinkedin(rawValue);
       default:
         return _parseText(rawValue);
     }
@@ -43,7 +45,9 @@ class BarcodeParser {
   // *************************** PRIVATE METHODS *************************** //
 
   BarcodeValueType _identifyType(String rawValue) {
-    if (rawValue.startsWith('https://instagram.com/')) {
+    if (rawValue.startsWith('https://www.linkedin.com/')) {
+      return BarcodeValueType.linkedin;
+    } else if (rawValue.startsWith('https://instagram.com/')) {
       return BarcodeValueType.instagram;
     } else if (rawValue.startsWith('https://twitter.com/')) {
       return BarcodeValueType.twitter;
@@ -293,5 +297,12 @@ class BarcodeParser {
     final username = rawValue.substring(startIndex, rawValue.length);
 
     return BarcodeInstagram(rawValue: rawValue, username: username);
+  }
+
+  BarcodeLinkedin _parseLinkedin(String rawValue) {
+    final startIndex = rawValue.indexOf('linkedin.com/in/') + 16;
+    final username = rawValue.substring(startIndex, rawValue.length);
+
+    return BarcodeLinkedin(rawValue: rawValue, username: username);
   }
 }

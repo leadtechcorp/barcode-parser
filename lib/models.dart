@@ -16,6 +16,7 @@ enum BarcodeValueType {
   whatsapp,
   twitter,
   instagram,
+  linkedin,
 }
 
 abstract class Barcode {
@@ -181,4 +182,11 @@ class BarcodeInstagram extends Barcode {
 
   BarcodeInstagram({required String rawValue, required this.username})
       : super(valueType: BarcodeValueType.instagram, rawValue: rawValue);
+}
+
+class BarcodeLinkedin extends Barcode {
+  final String username;
+
+  BarcodeLinkedin({required String rawValue, required this.username})
+      : super(valueType: BarcodeValueType.linkedin, rawValue: rawValue);
 }
