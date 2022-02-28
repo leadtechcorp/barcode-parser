@@ -93,6 +93,11 @@ END:VEVENT
     const PRODUCT_UPC_E = '06141939';
     const PRODUCT_EAN_13 = '9501101530003';
 
+    const _whatsappSimple = 'https://wa.me/124681112';
+    const _whatsappMessage =
+        'https://wa.me/124681112/?text=message%20to%20be%20delivered';
+    const _whatsappApi = 'https://api.whatsapp.com/send?phone=124681112';
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -368,6 +373,39 @@ END:VEVENT
           expect(wifi.ssid, 'WpaSsid');
           expect(wifi.password, 'suP¬rSecret8');
           expect(wifi.encryptionType, WifiEncryptionType.wpa);
+        });
+      });
+
+      group('given barcode is a Whatsapp code', () {
+        test('test simple', () {
+          final barcode = parser.parse(_whatsappSimple);
+          assert(barcode is BarcodeWhatsapp);
+          expect(barcode.rawValue, _whatsappSimple);
+
+          final wp = barcode as BarcodeWhatsapp;
+
+          expect(wp.phoneNumber, '124681112');
+          expect(wp.message, null);
+        });
+        test('test whatsapp with message', () {
+          final barcode = parser.parse(_whatsappMessage);
+          assert(barcode is BarcodeWhatsapp);
+          expect(barcode.rawValue, _whatsappMessage);
+
+          final wp = barcode as BarcodeWhatsapp;
+
+          expect(wp.phoneNumber, '124681112');
+          expect(wp.message, 'message to be delivered');
+        });
+        test('test whatsapp api', () {
+          final barcode = parser.parse(_whatsappApi);
+          assert(barcode is BarcodeWhatsapp);
+          expect(barcode.rawValue, _whatsappApi);
+
+          final wp = barcode as BarcodeWhatsapp;
+
+          expect(wp.phoneNumber, '124681112');
+          expect(wp.message, null);
         });
       });
     });

@@ -29,6 +29,8 @@ class BarcodeParser {
         return _parsePhone(rawValue);
       case BarcodeValueType.sms:
         return _parseSms(rawValue);
+      case BarcodeValueType.whatsapp:
+        return _parseWhatsapp(rawValue);
       default:
         return _parseText(rawValue);
     }
@@ -37,7 +39,10 @@ class BarcodeParser {
   // *************************** PRIVATE METHODS *************************** //
 
   BarcodeValueType _identifyType(String rawValue) {
-    if (isURL(rawValue)) {
+    if (rawValue.startsWith('https://wa.me/') ||
+        rawValue.startsWith('https://api.whatsapp.com/')) {
+      return BarcodeValueType.whatsapp;
+    } else if (isURL(rawValue)) {
       return BarcodeValueType.url;
     } else if (rawValue.startsWith('WIFI') || rawValue.startsWith('wifi')) {
       return BarcodeValueType.wifi;
@@ -234,5 +239,37 @@ class BarcodeParser {
     } catch (_) {
       return false;
     }
+  }
+
+  BarcodeWhatsapp _parseWhatsapp(String rawValue) {
+    String phone = '';
+    String? message;
+
+    if (rawValue.startsWith('https://wa.me/')) {
+      final startIndex = 14;
+      final endIndex = rawValue.indexOf('/', startIndex);
+
+      if (endIndex == -1) {
+        phone = rawValue.substring(startIndex, rawValue.length);
+      } else {
+        phone = rawValue.substring(startIndex, endIndex);
+        message =
+            rawValue.substring(rawValue.indexOf('text=') + 5, rawValue.length);
+      }
+    } else {
+      final startIndex = rawValue.indexOf('phone=') + 6;
+      phone = rawValue.substring(startIndex, rawValue.length);
+    }
+
+    String? unencodedMessage;
+    if (message != null) {
+      unencodedMessage = Uri.decodeFull(message);
+    }
+
+    return BarcodeWhatsapp(
+      rawValue: rawValue,
+      phoneNumber: phone,
+      message: unencodedMessage,
+    );
   }
 }

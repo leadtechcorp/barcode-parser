@@ -12,7 +12,8 @@ enum BarcodeValueType {
   wifi,
   location,
   calendarEvent,
-  driverLicense
+  driverLicense,
+  whatsapp,
 }
 
 abstract class Barcode {
@@ -33,13 +34,13 @@ class BarcodeCalendarEvent extends Barcode {
 
   BarcodeCalendarEvent(
       {required String rawValue,
-        this.end,
-        this.start,
-        this.description,
-        this.location,
-        this.organizer,
-        this.status,
-        this.summary})
+      this.end,
+      this.start,
+      this.description,
+      this.location,
+      this.organizer,
+      this.status,
+      this.summary})
       : super(valueType: BarcodeValueType.calendarEvent, rawValue: rawValue);
 }
 
@@ -75,20 +76,20 @@ class BarcodeDriverLicense extends Barcode {
 
   BarcodeDriverLicense(
       {required String rawValue,
-        this.addressCity,
-        this.addressState,
-        this.addressStreet,
-        this.addressZip,
-        this.birthDate,
-        this.documentType,
-        this.expiryDate,
-        this.firstName,
-        this.gender,
-        this.issueDate,
-        this.issuingCountry,
-        this.lastName,
-        this.middleName,
-        this.licenseNumber})
+      this.addressCity,
+      this.addressState,
+      this.addressStreet,
+      this.addressZip,
+      this.birthDate,
+      this.documentType,
+      this.expiryDate,
+      this.firstName,
+      this.gender,
+      this.issueDate,
+      this.issuingCountry,
+      this.lastName,
+      this.middleName,
+      this.licenseNumber})
       : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
 }
 
@@ -153,4 +154,15 @@ class BarcodeProduct extends Barcode {
 class BarcodeText extends Barcode {
   BarcodeText({required String rawValue})
       : super(valueType: BarcodeValueType.text, rawValue: rawValue);
+}
+
+class BarcodeWhatsapp extends Barcode {
+  final String phoneNumber;
+  final String? message;
+
+  BarcodeWhatsapp({
+    required String rawValue,
+    required this.phoneNumber,
+    this.message,
+  }) : super(valueType: BarcodeValueType.whatsapp, rawValue: rawValue);
 }
