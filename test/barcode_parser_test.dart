@@ -100,6 +100,8 @@ END:VEVENT
 
     const _twitter = 'https://twitter.com/username';
 
+    const _instagram = 'https://instagram.com/username';
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -420,6 +422,18 @@ END:VEVENT
           final twitter = barcode as BarcodeTwitter;
 
           expect(twitter.username, 'username');
+        });
+      });
+
+      group('given barcode is an Instagram username link', () {
+        test('test instagram', () {
+          final barcode = parser.parse(_instagram);
+          assert(barcode is BarcodeInstagram);
+          expect(barcode.rawValue, _instagram);
+
+          final instagram = barcode as BarcodeInstagram;
+
+          expect(instagram.username, 'username');
         });
       });
     });
