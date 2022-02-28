@@ -36,16 +36,16 @@ class BarcodeCalendarEvent extends Barcode {
   final String? status;
   final String? summary;
 
-  BarcodeCalendarEvent(
-      {required String rawValue,
-      this.end,
-      this.start,
-      this.description,
-      this.location,
-      this.organizer,
-      this.status,
-      this.summary})
-      : super(valueType: BarcodeValueType.calendarEvent, rawValue: rawValue);
+  BarcodeCalendarEvent({
+    required String rawValue,
+    this.end,
+    this.start,
+    this.description,
+    this.location,
+    this.organizer,
+    this.status,
+    this.summary,
+  }) : super(valueType: BarcodeValueType.calendarEvent, rawValue: rawValue);
 }
 
 class BarcodeLocation extends Barcode {
@@ -78,23 +78,23 @@ class BarcodeDriverLicense extends Barcode {
   final String? middleName;
   final String? licenseNumber;
 
-  BarcodeDriverLicense(
-      {required String rawValue,
-      this.addressCity,
-      this.addressState,
-      this.addressStreet,
-      this.addressZip,
-      this.birthDate,
-      this.documentType,
-      this.expiryDate,
-      this.firstName,
-      this.gender,
-      this.issueDate,
-      this.issuingCountry,
-      this.lastName,
-      this.middleName,
-      this.licenseNumber})
-      : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
+  BarcodeDriverLicense({
+    required String rawValue,
+    this.addressCity,
+    this.addressState,
+    this.addressStreet,
+    this.addressZip,
+    this.birthDate,
+    this.documentType,
+    this.expiryDate,
+    this.firstName,
+    this.gender,
+    this.issueDate,
+    this.issuingCountry,
+    this.lastName,
+    this.middleName,
+    this.licenseNumber,
+  }) : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
 }
 
 class BarcodeEmail extends Barcode {
@@ -143,9 +143,12 @@ class BarcodeWifi extends Barcode {
   final String? password;
   final WifiEncryptionType? encryptionType;
 
-  BarcodeWifi(
-      {required String rawValue, this.ssid, this.password, this.encryptionType})
-      : super(valueType: BarcodeValueType.wifi, rawValue: rawValue);
+  BarcodeWifi({
+    required String rawValue,
+    this.ssid,
+    this.password,
+    this.encryptionType,
+  }) : super(valueType: BarcodeValueType.wifi, rawValue: rawValue);
 }
 
 class BarcodeProduct extends Barcode {
