@@ -1,5 +1,7 @@
 # Barcode Parser
 
+[![style: lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)](https://pub.dev/packages/lint)
+
 The objective of this package is to provide a mechanism to parse decoded values from barcodes into dart objects.
 
 This is not a barcode scanner, in order to use this package you should previously have scanned and decoded a barcode.
@@ -17,6 +19,7 @@ The package can parse barcodes containing the following data:
 - Driver license
 - Products (ISBN, EAN, UPC...)
 - Plain text
+- Social media links (WhatsApp, Twitter, Instagram, Linkedin and Facebook)
 
 ## Pending work:
 
