@@ -104,6 +104,8 @@ END:VEVENT
 
     const _linkedin = 'https://www.linkedin.com/in/username';
 
+    const _facebook = 'https://www.facebook.com/username';
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -445,9 +447,21 @@ END:VEVENT
           assert(barcode is BarcodeLinkedin);
           expect(barcode.rawValue, _linkedin);
 
-          final linkeding = barcode as BarcodeLinkedin;
+          final linkedin = barcode as BarcodeLinkedin;
 
-          expect(linkeding.username, 'username');
+          expect(linkedin.username, 'username');
+        });
+      });
+
+      group('given barcode is a Facebook username link', () {
+        test('test facebook', () {
+          final barcode = parser.parse(_facebook);
+          assert(barcode is BarcodeFacebook);
+          expect(barcode.rawValue, _facebook);
+
+          final facebook = barcode as BarcodeFacebook;
+
+          expect(facebook.username, 'username');
         });
       });
     });
