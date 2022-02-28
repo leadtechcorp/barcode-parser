@@ -19,6 +19,7 @@ The package can parse barcodes containing the following data:
 - Driver license
 - Products (ISBN, EAN, UPC...)
 - Plain text
+- Social media links (WhatsApp, Twitter, Instagram, Linkedin and Facebook)
 
 ## Pending work:
 
