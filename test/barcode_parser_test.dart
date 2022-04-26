@@ -76,6 +76,7 @@ END:VEVENT
     const _smsToLongMessageSemicolons =
         'SMSTO:654987321:This is a long message, with some symbols: here and there - just to check that everything works';
     const _smsToMessage = 'SMSTO:666999777:content of the SMS';
+    const _smsToLowercase = 'smsto:666999777:message';
 
     const _textLong =
         'bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla';
@@ -315,6 +316,16 @@ END:VEVENT
 
           expect(sms.phoneNumber, '666999777');
           expect(sms.message, 'content of the SMS');
+        });
+        test('test smsto: (lowercase)', () {
+          final barcode = parser.parse(_smsToLowercase);
+          assert(barcode is BarcodeSms);
+          expect(barcode.rawValue, _smsToLowercase);
+
+          final sms = barcode as BarcodeSms;
+
+          expect(sms.phoneNumber, '666999777');
+          expect(sms.message, 'message');
         });
       });
 
