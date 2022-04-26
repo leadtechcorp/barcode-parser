@@ -1,5 +1,11 @@
 # Change log
 
+## [0.3.0] - 2022-04-26
+
+### Added
+
+- Detect SMS codes that start with 'smsto' (lowercase)
+
 ## [0.2.0] - 2022-02-28
 
 ### Added
