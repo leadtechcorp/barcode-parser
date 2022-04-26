@@ -76,7 +76,7 @@ class BarcodeParser {
       return BarcodeValueType.location;
     } else if (rawValue.startsWith('tel:') || rawValue.startsWith('TEL:')) {
       return BarcodeValueType.phone;
-    } else if (rawValue.startsWith('SMSTO:')) {
+    } else if (rawValue.startsWith('SMSTO:' || awValue.startsWith('smsto:')) {
       return BarcodeValueType.sms;
     } else {
       return BarcodeValueType.unknown;
