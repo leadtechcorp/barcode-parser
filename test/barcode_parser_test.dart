@@ -505,6 +505,10 @@ END:VEVENT
           expect(driverLicense.lastName, 'SAMPLE');
           expect(driverLicense.middleName, 'JOHN');
           expect(driverLicense.licenseNumber, 'T64235789');
+          expect(driverLicense.jurisdiction, '636000');
+          expect(driverLicense.aamvaVersion, 10);
+          expect(driverLicense.jurisdictionVersion, 0);
+          expect(driverLicense.aamvaFieldsEntries, 2);
         });
       });
     });

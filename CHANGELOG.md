@@ -1,5 +1,11 @@
 # Change log
 
+## [0.4.0] - 2022-06-07
+
+### Added
+
+- Support for driver licenses
+
 ## [0.3.0] - 2022-04-26
 
 ### Added

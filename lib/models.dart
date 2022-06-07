@@ -77,6 +77,10 @@ class BarcodeDriverLicense extends Barcode {
   final String? lastName;
   final String? middleName;
   final String? licenseNumber;
+  final String? jurisdiction;
+  final int? aamvaVersion;
+  final int? jurisdictionVersion;
+  final int? aamvaFieldsEntries;
 
   BarcodeDriverLicense({
     required String rawValue,
@@ -94,6 +98,10 @@ class BarcodeDriverLicense extends Barcode {
     this.lastName,
     this.middleName,
     this.licenseNumber,
+    this.jurisdiction,
+    this.aamvaVersion,
+    this.jurisdictionVersion,
+    this.aamvaFieldsEntries,
   }) : super(valueType: BarcodeValueType.driverLicense, rawValue: rawValue);
 }
 
