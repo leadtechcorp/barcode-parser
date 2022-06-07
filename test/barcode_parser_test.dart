@@ -109,6 +109,9 @@ END:VEVENT
 
     const _facebook = 'https://www.facebook.com/username';
 
+    const _driverLicense =
+        "@\x0a\x1e\x0dANSI 636000100002DL00410278ZV03190008DLDAQT64235789\x0aDCSSAMPLE\x0aDDEN\x0aDACMICHAEL\x0aDDFN\x0aDADJOHN\x0aDDGN\x0aDCUJR\x0aDCAD\x0aDCBK\x0aDCDPH\x0aDBD06062019\x0aDBB06061986\x0aDBA12102024\x0aDBC1\x0aDAU068 in\x0aDAYBRO\x0aDAG2300 WEST BROAD STREET\x0aDAIRICHMOND\x0aDAJVA\x0aDAK232690000\x0aDCF2424244747474786102204\x0aDCGUSA\x0aDCK123456789\x0aDDAF\x0aDDB06062018\x0aDDC06062020\x0aDDD1\x0dZVZVA01\x0d";
+
     // ******************************** VARS ******************************* //
 
     late BarcodeParser parser;
@@ -477,6 +480,35 @@ END:VEVENT
           final facebook = barcode as BarcodeFacebook;
 
           expect(facebook.username, 'username');
+        });
+      });
+
+      group('given barcode is a driver license', () {
+        test('test driver license', () {
+          final barcode = parser.parse(_driverLicense);
+          assert(barcode is BarcodeDriverLicense);
+          expect(barcode.rawValue, _driverLicense);
+
+          final driverLicense = barcode as BarcodeDriverLicense;
+
+          expect(driverLicense.addressCity, 'RICHMOND');
+          expect(driverLicense.addressState, 'VA');
+          expect(driverLicense.addressStreet, '2300 WEST BROAD STREET');
+          expect(driverLicense.addressZip, '232690000');
+          expect(driverLicense.birthDate, DateTime(1986, 6, 6));
+          expect(driverLicense.documentType, 'DL');
+          expect(driverLicense.expiryDate, DateTime(2024, 12, 10));
+          expect(driverLicense.firstName, 'MICHAEL');
+          expect(driverLicense.gender, 'M');
+          expect(driverLicense.issueDate, DateTime(2019, 6, 6));
+          expect(driverLicense.issuingCountry, 'USA');
+          expect(driverLicense.lastName, 'SAMPLE');
+          expect(driverLicense.middleName, 'JOHN');
+          expect(driverLicense.licenseNumber, 'T64235789');
+          expect(driverLicense.jurisdiction, '636000');
+          expect(driverLicense.aamvaVersion, 10);
+          expect(driverLicense.jurisdictionVersion, 0);
+          expect(driverLicense.aamvaFieldsEntries, 2);
         });
       });
     });

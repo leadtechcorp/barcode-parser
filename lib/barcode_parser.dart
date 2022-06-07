@@ -39,6 +39,8 @@ class BarcodeParser {
         return _parseLinkedin(rawValue);
       case BarcodeValueType.facebook:
         return _parseFacebook(rawValue);
+      case BarcodeValueType.driverLicense:
+        return _parseDriverLicense(rawValue);
       default:
         return _parseText(rawValue);
     }
@@ -78,6 +80,8 @@ class BarcodeParser {
       return BarcodeValueType.phone;
     } else if (rawValue.startsWith('SMSTO:') || rawValue.startsWith('smsto:')) {
       return BarcodeValueType.sms;
+    } else if (rawValue.startsWith("@\x0a\x1e\x0d")) {
+      return BarcodeValueType.driverLicense;
     } else {
       return BarcodeValueType.unknown;
     }
@@ -327,5 +331,170 @@ class BarcodeParser {
     final username = rawValue.substring(startIndex, rawValue.length);
 
     return BarcodeFacebook(rawValue: rawValue, username: username);
+  }
+
+  BarcodeDriverLicense _parseDriverLicense(String rawValue) {
+    var startIndex = rawValue.indexOf('ANSI ') + 5;
+    final jurisdiction = rawValue.substring(startIndex, startIndex += 6);
+    final aamvaVersion =
+        int.tryParse(rawValue.substring(startIndex, startIndex += 2))!;
+    final jurisVersion =
+        int.tryParse(rawValue.substring(startIndex, startIndex += 2))!;
+    final entries =
+        int.tryParse(rawValue.substring(startIndex, startIndex += 2))!;
+    final documentType = rawValue.substring(startIndex, startIndex += 2);
+    final offset =
+        int.tryParse(rawValue.substring(startIndex, startIndex += 4))!;
+    final length =
+        int.tryParse(rawValue.substring(startIndex, startIndex + 4))!;
+
+    startIndex = offset + 2;
+    final stopIndex = startIndex + length;
+
+    final rawRecords =
+        rawValue.substring(startIndex, stopIndex).trim().split("\x0a");
+
+    String? addressCity;
+    String? addressState;
+    String? addressStreet;
+    String? addressZip;
+    DateTime? birthDate;
+    DateTime? expiryDate;
+    String? firstName;
+    String? gender;
+    DateTime? issueDate;
+    String? issuingCountry;
+    String? lastName;
+    String? middleName;
+    String? licenseNumber;
+
+    String rawBirthDate = '';
+    String rawExpireDate = '';
+    String rawIssueDate = '';
+
+    for (final String record in rawRecords) {
+      final recordType = record.substring(0, 3);
+
+      switch (recordType) {
+        case 'DAI':
+          addressCity = record.substring(3, record.length);
+          break;
+        case 'DAJ':
+          addressState = record.substring(3, record.length);
+          break;
+        case 'DAG':
+          addressStreet =
+              "${record.substring(3, record.length)}\n${addressStreet ?? ''}"
+                  .trim();
+          break;
+        case 'DAH':
+          addressStreet =
+              "${addressStreet ?? ''}\n${record.substring(3, record.length)}"
+                  .trim();
+          break;
+        case 'DAK':
+          addressZip = record.substring(3, record.length);
+          break;
+        case 'DBB':
+          rawBirthDate = record.substring(3, record.length);
+          break;
+        case 'DBA':
+          rawExpireDate = record.substring(3, record.length);
+          break;
+        case 'DAC':
+          firstName = record.substring(3, record.length);
+          break;
+        case 'DBC':
+          final rawGender = record.substring(3, record.length);
+          switch (rawGender) {
+            case '1':
+              gender = 'M';
+              break;
+            case '2':
+              gender = 'F';
+              break;
+            case '9':
+              gender = 'X';
+              break;
+            default:
+              gender = '?';
+              break;
+          }
+          break;
+        case 'DBD':
+          rawIssueDate = record.substring(3, record.length);
+          break;
+        case 'DCG':
+          issuingCountry = record.substring(3, record.length);
+          break;
+        case 'DCS':
+          lastName = record.substring(3, record.length);
+          break;
+        case 'DAD':
+          middleName = record.substring(3, record.length);
+          break;
+        case 'DAQ':
+          licenseNumber = record.substring(3, record.length);
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (issuingCountry == 'USA') {
+      birthDate = DateTime(
+        int.tryParse(rawBirthDate.substring(4, 8))!,
+        int.tryParse(rawBirthDate.substring(0, 2))!,
+        int.tryParse(rawBirthDate.substring(2, 4))!,
+      );
+      expiryDate = DateTime(
+        int.tryParse(rawExpireDate.substring(4, 8))!,
+        int.tryParse(rawExpireDate.substring(0, 2))!,
+        int.tryParse(rawExpireDate.substring(2, 4))!,
+      );
+      issueDate = DateTime(
+        int.tryParse(rawIssueDate.substring(4, 8))!,
+        int.tryParse(rawIssueDate.substring(0, 2))!,
+        int.tryParse(rawIssueDate.substring(2, 4))!,
+      );
+    } else {
+      birthDate = DateTime(
+        int.tryParse(rawBirthDate.substring(0, 4))!,
+        int.tryParse(rawBirthDate.substring(4, 6))!,
+        int.tryParse(rawBirthDate.substring(6, 8))!,
+      );
+      expiryDate = DateTime(
+        int.tryParse(rawExpireDate.substring(0, 4))!,
+        int.tryParse(rawExpireDate.substring(4, 6))!,
+        int.tryParse(rawExpireDate.substring(6, 8))!,
+      );
+      issueDate = DateTime(
+        int.tryParse(rawIssueDate.substring(0, 4))!,
+        int.tryParse(rawIssueDate.substring(4, 6))!,
+        int.tryParse(rawIssueDate.substring(6, 8))!,
+      );
+    }
+
+    return BarcodeDriverLicense(
+      rawValue: rawValue,
+      addressCity: addressCity,
+      addressState: addressState,
+      addressStreet: addressStreet,
+      addressZip: addressZip,
+      birthDate: birthDate,
+      documentType: documentType,
+      expiryDate: expiryDate,
+      firstName: firstName,
+      gender: gender,
+      issueDate: issueDate,
+      issuingCountry: issuingCountry,
+      lastName: lastName,
+      middleName: middleName,
+      licenseNumber: licenseNumber,
+      jurisdiction: jurisdiction,
+      aamvaVersion: aamvaVersion,
+      jurisdictionVersion: jurisVersion,
+      aamvaFieldsEntries: entries,
+    );
   }
 }
