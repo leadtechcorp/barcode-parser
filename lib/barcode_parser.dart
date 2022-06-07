@@ -491,6 +491,10 @@ class BarcodeParser {
       lastName: lastName,
       middleName: middleName,
       licenseNumber: licenseNumber,
+      jurisdiction: jurisdiction,
+      aamvaVersion: aamvaVersion,
+      jurisdictionVersion: jurisVersion,
+      aamvaFieldsEntries: entries,
     );
   }
 }
